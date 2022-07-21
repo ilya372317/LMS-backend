@@ -31,15 +31,15 @@
 ### Entities 
 - User - base entity for all users on the game. Used to authenticate, participate in quest and so on.
 - Quest - central entity of all game. Have relations with quest giver and Quest executor based on user_id and all information about reward, skill improvement and other. Have a several status.
-- Classes - character classes (geek, worker, blogger)
-- account_notification.
-- user_characteristics
-- characteristic
-- quest_files
-- account_files
-- chat_files
-- chat
-- chat_messages
+- Classes - character classes (geek, worker, blogger).
+- account_notification. - Entity for store and aggregate users notifications.
+- user_characteristics - Binder entity. Contains information about user and related characteristics.
+- characteristic - speak for it`s self.
+- quest_files - Files related to the quest.
+- account_files - Files related to the users.
+- chat_files - Files which users send to each other in chat.
+- chat - central entity to conversation users to each other. Contains information about interlocutors, related files messages and so on.
+- chat_messages - speak for it`s self.
 
 ### User entity properties
 - id
