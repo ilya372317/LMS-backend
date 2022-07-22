@@ -3,10 +3,13 @@
 namespace App\Entity;
 
 use App\Repository\UserRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
+#[ORM\HasLifecycleCallbacks]
 class User
 {
     #[ORM\Id]
@@ -37,6 +40,14 @@ class User
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
     private ?\DateTimeInterface $updatedAt = null;
+
+    #[ORM\ManyToMany(targetEntity: Chat::class, mappedBy: 'usersIds')]
+    private Collection $chats;
+
+    public function __construct()
+    {
+        $this->chats = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -143,4 +154,47 @@ class User
     {
         return (string) $this->name;
     }
+
+    /**
+     * @return Collection<int, Chat>
+     */
+    public function getChats(): Collection
+    {
+        return $this->chats;
+    }
+
+    public function addChat(Chat $chat): self
+    {
+        if (!$this->chats->contains($chat)) {
+            $this->chats[] = $chat;
+            $chat->addUsersId($this);
+        }
+
+        return $this;
+    }
+
+    public function removeChat(Chat $chat): self
+    {
+        if ($this->chats->removeElement($chat)) {
+            $chat->removeUsersId($this);
+        }
+
+        return $this;
+    }
+
+    #[ORM\PrePersist]
+    public function onPersist(): void
+    {
+        $this->createdAt = new \DateTimeImmutable();
+        $this->updatedAt = new \DateTime();
+        $this->password = md5($this->getPassword());
+    }
+
+    #[ORM\PreUpdate]
+    public function onUpdate(): void
+    {
+        $this->updatedAt = new \DateTime();
+        $this->password = md5($this->getPassword());
+    }
+
 }

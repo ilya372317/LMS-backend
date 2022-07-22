@@ -2,6 +2,8 @@
 
 namespace App\Controller\Admin;
 
+use App\Entity\Chat;
+use App\Entity\Quest;
 use App\Entity\User;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Dashboard;
 use EasyCorp\Bundle\EasyAdminBundle\Config\MenuItem;
@@ -40,5 +42,7 @@ class DashboardController extends AbstractDashboardController
     public function configureMenuItems(): iterable
     {
          yield MenuItem::linkToCrud('Users', 'fa-solid fa-user', User::class);
+         yield MenuItem::linkToCrud('Chat', 'fa-brands fa-rocketchat', Chat::class);
+         yield MenuItem::linkToCrud('Quest', 'fa-solid fa-block-question', Quest::class);
     }
 }

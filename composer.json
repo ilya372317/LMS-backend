@@ -8,6 +8,7 @@
         "ext-ctype": "*",
         "ext-iconv": "*",
         "ext-pdo": "*",
+        "ext-xdebug": "*",
         "doctrine/annotations": "^1.0",
         "doctrine/doctrine-bundle": "^2.7",
         "doctrine/doctrine-migrations-bundle": "^3.2",
@@ -18,6 +19,7 @@
         "sensio/framework-extra-bundle": "^6.1",
         "symfony/asset": "6.1.*",
         "symfony/console": "6.1.*",
+        "symfony/doctrine-bridge": "6.1.*",
         "symfony/doctrine-messenger": "6.1.*",
         "symfony/dotenv": "6.1.*",
         "symfony/expression-language": "6.1.*",
@@ -43,8 +45,7 @@
         "symfony/validator": "6.1.*",
         "symfony/web-link": "6.1.*",
         "symfony/yaml": "6.1.*",
-        "twig/extra-bundle": "^2.12|^3.0",
-      "ext-xdebug": "*"
+        "twig/extra-bundle": "^2.12|^3.0"
     },
     "config": {
         "allow-plugins": {
