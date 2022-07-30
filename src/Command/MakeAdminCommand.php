@@ -2,6 +2,7 @@
 
 namespace App\Command;
 
+use App\CLI\CommandLine;
 use App\Entity\User;
 use App\Enum\User\UserRole;
 use Doctrine\ORM\EntityManager;
@@ -44,8 +45,12 @@ class MakeAdminCommand extends Command
         $output->writeln("");
         $output->writeln("select user, to make him admin (type id in brace)");
 
-        $conversation = new ConversationClass();
-        $userId = $conversation->conversation();
+        $commandLine = new CommandLine();
+        $test = $commandLine->getUserInput();
+
+        dd($test);
+
+        $userId = 1;
 
         $userToUpdate = $userRepository->find((int) $userId);
         $userToUpdate->addRole(UserRole::ADMIN);
