@@ -4,10 +4,12 @@ namespace App\Entity;
 
 use App\Enum\User\UserRole;
 use App\Repository\UserRepository;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[UniqueEntity(fields: 'username', message: 'User with same name already exists')]
@@ -20,18 +22,28 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private ?int $id = null;
 
     #[ORM\Column(length: 180, unique: true)]
+    #[Assert\NotBlank]
+    #[Assert\Length(
+        min: 3,
+        max: 250,
+        minMessage: "Username should have at least 3 symbols",
+        maxMessage: "Username should have less then 250 symbols"
+    )]
     private ?string $username = null;
 
     #[ORM\Column]
     private array $roles = [];
 
     #[ORM\Column]
+    #[Assert\NotCompromisedPassword]
+    #[Assert\Type(Types::STRING)]
     private ?string $password = null;
 
-    #[ORM\Column(length: 500, unique: true)]
+    #[ORM\Column(length: 500, unique: true, nullable: true)]
+    #[Assert\Email]
     private string $email;
 
-    #[ORM\Column(type: 'boolean')]
+    #[ORM\Column(type: Types::BOOLEAN)]
     private $isVerified = false;
 
     public function getId(): ?int
@@ -58,7 +70,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     public function getUserIdentifier(): string
     {
-        return (string) $this->username;
+        return (string)$this->username;
     }
 
     /**
@@ -80,7 +92,8 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
-    public function addRole(UserRole $role) {
+    public function addRole(UserRole $role)
+    {
         $this->roles[] = $role->value;
     }
 
@@ -117,7 +130,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     }
 
     /**
-     * @param  string  $email
+     * @param string $email
      * @return User
      */
     public function setEmail(string $email): self
@@ -136,5 +149,13 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $this->isVerified = $isVerified;
 
         return $this;
+    }
+
+    public function __toString(): string
+    {
+        return $this->username . "\n"
+            . $this->email . "\n"
+            . $this->id;
+
     }
 }

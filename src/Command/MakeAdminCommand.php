@@ -3,6 +3,7 @@
 namespace App\Command;
 
 use App\CLI\CommandLine;
+use App\CLI\IntegerCommandLine;
 use App\Entity\User;
 use App\Enum\User\UserRole;
 use Doctrine\ORM\EntityManager;
@@ -45,10 +46,8 @@ class MakeAdminCommand extends Command
         $output->writeln("");
         $output->writeln("select user, to make him admin (type id in brace)");
 
-        $commandLine = new CommandLine();
-        $test = $commandLine->getUserInput();
-
-        dd($test);
+        $integerCommandLine = new IntegerCommandLine();
+        $userInput = $integerCommandLine->getUserInput();
 
         $userId = 1;
 

@@ -2,15 +2,11 @@
 
 namespace App\CLI;
 
-use phpDocumentor\Reflection\Types\Resource_;
-
-class CommandLine implements CommandLineContract
+abstract class CommandLine implements CommandLineContract
 {
-    public function openReadStream()
+    public function unlockReadStream(): bool
     {
-        $stream = fopen("php://stdin", 'r');
-        stream_set_blocking($stream, false);
-        return $stream;
+        return stream_set_blocking(STDIN, false);
     }
 
     public function closeStream($stream): bool
@@ -31,18 +27,17 @@ class CommandLine implements CommandLineContract
             );
 
             if ($countOfOpenedStreams > 0) {
-                return $this->readInput();
+                return $this->read();
             }
         }
     }
 
-    public function writeOutput(): bool
-    {
-        return false;
-    }
+    abstract public function write(string $data): int|false;
 
-    public function readInput(): string
+    abstract public function read(): mixed;
+
+    public function unlockWriteStream(): bool
     {
-        return fgets(STDIN);
+        return stream_set_blocking(STDOUT, false);
     }
 }

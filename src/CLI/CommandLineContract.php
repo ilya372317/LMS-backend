@@ -2,27 +2,22 @@
 
 namespace App\CLI;
 
-use App\Exception\InputValidateException;
-use phpDocumentor\Reflection\Types\Resource_;
-
 interface CommandLineContract
 {
 
     /**
-     * Open CLI stream
+     * Unlock input CLI stream.
      *
-     * @throws InputValidateException
-     * @return bool|resource
+     * @return bool|
      */
-    public function openReadStream();
+    public function unlockReadStream(): bool;
 
     /**
-     * close CLI stream
+     * Ublock output CLI stream.
      *
-     * @param resource $stream
      * @return bool
      */
-    public function closeStream($stream): bool;
+    public function unlockWriteStream(): bool;
 
     /**
      * Wait while user type input and return it.
@@ -36,13 +31,14 @@ interface CommandLineContract
      *
      * @return string
      */
-    public function readInput(): string;
+    public function read(): mixed;
 
     /**
-     * write output to CLI.
+     * Send data to CLI.
      *
-     * @return bool
+     * @param string $data
+     * @return int|false
      */
-    public function writeOutput(): bool;
+    public function write(string $data): int|false;
 
 }
