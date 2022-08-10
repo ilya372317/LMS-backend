@@ -4,11 +4,8 @@ namespace App\Controller\Api;
 
 use App\Entity\User;
 use App\Repository\UserRepository;
-use Doctrine\ORM\EntityManager;
 use Doctrine\ORM\EntityManagerInterface;
-use Doctrine\ORM\Exception\ORMException;
 use Firebase\JWT\JWT;
-use Psr\Log\LoggerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -19,12 +16,10 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 class AuthController extends AbstractController
 {
     private EntityManagerInterface $entityManager;
-    private LoggerInterface $logger;
 
-    public function __construct(EntityManagerInterface $entityManager, LoggerInterface $logger)
+    public function __construct(EntityManagerInterface $entityManager)
     {
         $this->entityManager = $entityManager;
-        $this->logger = $logger;
     }
 
     #[Route('/api/register', name: 'api_register', methods: 'POST')]
@@ -39,10 +34,8 @@ class AuthController extends AbstractController
         $username = $parameters['username'];
         $email = $parameters['email'];
 
-        //@TODO: Replace creating of user in other class
         $user = new User();
 
-        //@TODO: Make costume validator to check value is unique
         $user->setUsername($username);
         $user->setPassword($passwordHasher->hashPassword($user, $password));
         $user->setEmail($email);
@@ -55,18 +48,8 @@ class AuthController extends AbstractController
             ]);
         }
 
-        //@TODO: Replace persisting in other class
-        try {
-            $this->entityManager->persist($user);
-            $this->entityManager->flush();
-
-        } catch (ORMException $ORMException) {
-            $this->logger->error('failed to save user data ['.$user.']');
-            $this->logger->error($ORMException->getMessage());
-            return $this->json([
-                'error' => "failed to save user data",
-            ]);
-        }
+        $this->entityManager->persist($user);
+        $this->entityManager->flush();
 
         return $this->json([
             $user->getUsername(),
@@ -81,7 +64,6 @@ class AuthController extends AbstractController
         UserPasswordHasherInterface $passwordHasher
     ): Response {
 
-        //@TODO: Make form for validation
         $parameters = json_decode($request->getContent(), true);
 
         $user = $userRepository->findOneBy([
