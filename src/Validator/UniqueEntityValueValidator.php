@@ -29,10 +29,12 @@ class UniqueEntityValueValidator extends ConstraintValidator
 
         $findValue = $repository->findBy([$constraint->columnName => $value]);
 
-        if (count($findValue) > 0) {
-            $this->context->buildViolation($constraint->message)
-                ->setParameter('{{ value }}', $value)
-                ->addViolation();
+        if ($value !== null) {
+            if (count($findValue) > 0) {
+                $this->context->buildViolation($constraint->message)
+                    ->setParameter('{{ value }}', $value)
+                    ->addViolation();
+            }
         }
     }
 }

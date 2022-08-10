@@ -34,7 +34,6 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     private array $roles = [];
 
     #[ORM\Column]
-    #[Assert\NotCompromisedPassword]
     #[Assert\Type(Types::STRING)]
     private ?string $password = null;
 
