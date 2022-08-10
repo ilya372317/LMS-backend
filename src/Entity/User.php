@@ -4,16 +4,14 @@ namespace App\Entity;
 
 use App\Enum\User\UserRole;
 use App\Repository\UserRepository;
+use App\Validator\UniqueEntityValue;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Entity(repositoryClass: UserRepository::class)]
-#[UniqueEntity(fields: 'username', message: 'User with same name already exists')]
-#[UniqueEntity(fields: 'email', message: 'user with same email already exists')]
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
     #[ORM\Id]
@@ -29,6 +27,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         minMessage: "Username should have at least 3 symbols",
         maxMessage: "Username should have less then 250 symbols"
     )]
+    #[UniqueEntityValue(self::class, 'username')]
     private ?string $username = null;
 
     #[ORM\Column]
@@ -41,6 +40,7 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     #[ORM\Column(length: 500, unique: true, nullable: true)]
     #[Assert\Email]
+    #[UniqueEntityValue(self::class, 'email')]
     private string $email;
 
     #[ORM\Column(type: Types::BOOLEAN)]
