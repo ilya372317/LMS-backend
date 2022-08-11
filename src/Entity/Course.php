@@ -2,12 +2,13 @@
 
 namespace App\Entity;
 
-use App\Repository\ImageRepository;
+use App\Repository\CourseRepository;
 use DateTimeImmutable;
+use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
-#[ORM\Entity(repositoryClass: ImageRepository::class)]
-class Image
+#[ORM\Entity(repositoryClass: CourseRepository::class)]
+class Course
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
@@ -15,16 +16,16 @@ class Image
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
-    private ?string $realted_entity = null;
+    private ?string $title = null;
 
-    #[ORM\Column(length: 400, nullable: true)]
-    private ?string $path = null;
+    #[ORM\Column(length: 1000, nullable: true)]
+    private ?string $description = null;
 
-    #[ORM\Column(length: 255)]
-    private ?string $fileName = null;
+    #[ORM\Column(type: Types::BIGINT)]
+    private ?string $price = null;
 
-    #[ORM\Column(length: 255)]
-    private ?string $mimeType = null;
+    #[ORM\ManyToOne]
+    private ?Image $mainImage = null;
 
     #[ORM\Column]
     private ?DateTimeImmutable $createdAt = null;
@@ -37,50 +38,50 @@ class Image
         return $this->id;
     }
 
-    public function getRealtedEntity(): ?string
+    public function getTitle(): ?string
     {
-        return $this->realted_entity;
+        return $this->title;
     }
 
-    public function setRealtedEntity(string $realted_entity): self
+    public function setTitle(string $title): self
     {
-        $this->realted_entity = $realted_entity;
+        $this->title = $title;
 
         return $this;
     }
 
-    public function getPath(): ?string
+    public function getDescription(): ?string
     {
-        return $this->path;
+        return $this->description;
     }
 
-    public function setPath(?string $path): self
+    public function setDescription(?string $description): self
     {
-        $this->path = $path;
+        $this->description = $description;
 
         return $this;
     }
 
-    public function getFileName(): ?string
+    public function getPrice(): ?string
     {
-        return $this->fileName;
+        return $this->price;
     }
 
-    public function setFileName(string $fileName): self
+    public function setPrice(string $price): self
     {
-        $this->fileName = $fileName;
+        $this->price = $price;
 
         return $this;
     }
 
-    public function getMimeType(): ?string
+    public function getMainImage(): ?Image
     {
-        return $this->mimeType;
+        return $this->mainImage;
     }
 
-    public function setMimeType(string $mimeType): self
+    public function setMainImage(?Image $mainImage): self
     {
-        $this->mimeType = $mimeType;
+        $this->mainImage = $mainImage;
 
         return $this;
     }

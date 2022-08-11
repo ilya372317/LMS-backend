@@ -5,6 +5,9 @@ namespace App\Entity;
 use App\Enum\User\UserRole;
 use App\Repository\UserRepository;
 use App\Validator\UniqueEntityValue;
+use DateTimeImmutable;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
@@ -44,6 +47,20 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
 
     #[ORM\Column(type: Types::BOOLEAN)]
     private $isVerified = false;
+
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: CourseAccess::class, orphanRemoval: true)]
+    private Collection $courseAccesses;
+
+    #[ORM\Column]
+    private ?DateTimeImmutable $createdAt = null;
+
+    #[ORM\Column]
+    private ?DateTimeImmutable $updatedAt = null;
+
+    public function __construct()
+    {
+        $this->courseAccesses = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -150,11 +167,78 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this;
     }
 
+    public function getUpdatedAt(): DateTimeImmutable
+    {
+        return $this->updatedAt;
+    }
+
+    public function setUpdatedAt(DateTimeImmutable $updatedAt): self
+    {
+        $this->updatedAt = $updatedAt;
+
+        return $this;
+    }
+
+    public function getCreatedAt(): DateTimeImmutable
+    {
+        return $this->createdAt;
+    }
+
+    public function setCreatedAt(DateTimeImmutable $createdAt): self
+    {
+        $this->createdAt = $createdAt;
+
+        return $this;
+    }
+
     public function __toString(): string
     {
         return $this->username . "\n"
             . $this->email . "\n"
             . $this->id;
 
+    }
+
+    /**
+     * @return Collection<int, CourseAccess>
+     */
+    public function getCourseAccesses(): Collection
+    {
+        return $this->courseAccesses;
+    }
+
+    public function addCourseAccess(CourseAccess $courseAccess): self
+    {
+        if (!$this->courseAccesses->contains($courseAccess)) {
+            $this->courseAccesses->add($courseAccess);
+            $courseAccess->setUser($this);
+        }
+
+        return $this;
+    }
+
+    public function removeCourseAccess(CourseAccess $courseAccess): self
+    {
+        if ($this->courseAccesses->removeElement($courseAccess)) {
+            // set the owning side to null (unless already changed)
+            if ($courseAccess->getUser() === $this) {
+                $courseAccess->setUser(null);
+            }
+        }
+
+        return $this;
+    }
+
+    #[ORM\PreUpdate]
+    public function onUpdate(): void
+    {
+        $this->updatedAt = new DateTimeImmutable();
+    }
+
+    #[ORM\PrePersist]
+    public function onCreate(): void
+    {
+        $this->createdAt = new DateTimeImmutable();
+        $this->updatedAt = new DateTimeImmutable();
     }
 }

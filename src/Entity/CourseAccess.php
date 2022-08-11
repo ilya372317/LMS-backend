@@ -2,29 +2,31 @@
 
 namespace App\Entity;
 
-use App\Repository\ImageRepository;
+use App\Repository\CourseAccessRepository;
 use DateTimeImmutable;
 use Doctrine\ORM\Mapping as ORM;
 
-#[ORM\Entity(repositoryClass: ImageRepository::class)]
-class Image
+#[ORM\Entity(repositoryClass: CourseAccessRepository::class)]
+class CourseAccess
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
     private ?int $id = null;
 
-    #[ORM\Column(length: 255)]
-    private ?string $realted_entity = null;
+    #[ORM\ManyToOne(inversedBy: 'courseAccesses')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?User $user = null;
 
-    #[ORM\Column(length: 400, nullable: true)]
-    private ?string $path = null;
+    #[ORM\ManyToOne]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?Course $course = null;
 
-    #[ORM\Column(length: 255)]
-    private ?string $fileName = null;
+    #[ORM\Column]
+    private ?bool $unlimitedAccess = null;
 
-    #[ORM\Column(length: 255)]
-    private ?string $mimeType = null;
+    #[ORM\Column(nullable: true)]
+    private ?DateTimeImmutable $accessTo = null;
 
     #[ORM\Column]
     private ?DateTimeImmutable $createdAt = null;
@@ -37,50 +39,50 @@ class Image
         return $this->id;
     }
 
-    public function getRealtedEntity(): ?string
+    public function getUser(): ?User
     {
-        return $this->realted_entity;
+        return $this->user;
     }
 
-    public function setRealtedEntity(string $realted_entity): self
+    public function setUser(?User $user): self
     {
-        $this->realted_entity = $realted_entity;
+        $this->user = $user;
 
         return $this;
     }
 
-    public function getPath(): ?string
+    public function getCourse(): ?Course
     {
-        return $this->path;
+        return $this->course;
     }
 
-    public function setPath(?string $path): self
+    public function setCourse(?Course $course): self
     {
-        $this->path = $path;
+        $this->course = $course;
 
         return $this;
     }
 
-    public function getFileName(): ?string
+    public function isUnlimitedAccess(): ?bool
     {
-        return $this->fileName;
+        return $this->unlimitedAccess;
     }
 
-    public function setFileName(string $fileName): self
+    public function setUnlimitedAccess(bool $unlimitedAccess): self
     {
-        $this->fileName = $fileName;
+        $this->unlimitedAccess = $unlimitedAccess;
 
         return $this;
     }
 
-    public function getMimeType(): ?string
+    public function getAccessTo(): ?DateTimeImmutable
     {
-        return $this->mimeType;
+        return $this->accessTo;
     }
 
-    public function setMimeType(string $mimeType): self
+    public function setAccessTo(?DateTimeImmutable $accessTo): self
     {
-        $this->mimeType = $mimeType;
+        $this->accessTo = $accessTo;
 
         return $this;
     }
