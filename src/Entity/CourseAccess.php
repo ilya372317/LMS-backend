@@ -7,6 +7,7 @@ use DateTimeImmutable;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: CourseAccessRepository::class)]
+#[ORM\HasLifecycleCallbacks]
 class CourseAccess
 {
     #[ORM\Id]

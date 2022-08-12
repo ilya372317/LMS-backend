@@ -7,6 +7,7 @@ use DateTimeImmutable;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: ImageRepository::class)]
+#[ORM\HasLifecycleCallbacks]
 class Image
 {
     #[ORM\Id]
@@ -15,7 +16,7 @@ class Image
     private ?int $id = null;
 
     #[ORM\Column(length: 255)]
-    private ?string $realted_entity = null;
+    private ?string $related_entity = null;
 
     #[ORM\Column(length: 400, nullable: true)]
     private ?string $path = null;
@@ -37,14 +38,14 @@ class Image
         return $this->id;
     }
 
-    public function getRealtedEntity(): ?string
+    public function getRelatedEntity(): ?string
     {
-        return $this->realted_entity;
+        return $this->related_entity;
     }
 
-    public function setRealtedEntity(string $realted_entity): self
+    public function setRelatedEntity(string $related_entity): self
     {
-        $this->realted_entity = $realted_entity;
+        $this->related_entity = $related_entity;
 
         return $this;
     }
