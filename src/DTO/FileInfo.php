@@ -70,6 +70,4 @@ class FileInfo
         $this->mimeType = $mimeType;
         return $this;
     }
-
-
 }
