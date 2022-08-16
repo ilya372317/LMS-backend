@@ -5,10 +5,11 @@ namespace App\Entity;
 use App\Repository\ImageRepository;
 use DateTimeImmutable;
 use Doctrine\ORM\Mapping as ORM;
+use Xaduken\ImageSupport\EntityInterface\Imageable;
 
 #[ORM\Entity(repositoryClass: ImageRepository::class)]
 #[ORM\HasLifecycleCallbacks]
-class Image
+class Image implements Imageable
 {
     #[ORM\Id]
     #[ORM\GeneratedValue]
