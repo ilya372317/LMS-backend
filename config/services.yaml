@@ -7,6 +7,9 @@ parameters:
     jwt_secret: Fhntv372317Nrfxbr
     file_directory: '%kernel.project_dir%/public/uploads/default'
     image_directory: '%kernel.project_dir%/public/uploads/image'
+    user_image_directory: '%kernel.project_dir%/public/uploads/user'
+    course_image_directory: '%kernel.project_dir%/public/uploads/course'
+    lesson_image_directory: '%kernel.project_dir%/public/uploads/lesson'
 
 services:
     _defaults:
@@ -22,7 +25,12 @@ services:
             - '../src/Entity/'
             - '../src/Kernel.php'
 
-    App\Factory\File\ImageManagerFactory:
+    App\Image\UserImageManager:
         arguments:
-            $fileDirectory: '%image_directory%'
-
+            $targetDir: '%user_image_directory%'
+    App\Image\CourseImageManager:
+        arguments:
+            $targetDirectory: '%course_image_directory%'
+    App\Image\LessonImageManager:
+        arguments:
+            $targetDirectory: '%lesson_image_directory%'
