@@ -2,6 +2,7 @@
 
 namespace App\Service\Course;
 
+use App\Entity\Course;
 use App\Repository\CourseRepository;
 use App\Service\Request\State\PaginatorContext;
 use Knp\Component\Pager\PaginatorInterface;
@@ -23,5 +24,10 @@ class StandardCourseService implements CourseServiceInterface
         $paginatorContext = new PaginatorContext($request, $this->paginator);
         $allCourses = $this->courseRepository->findAll();
         return $paginatorContext->getPagination($allCourses);
+    }
+
+    public function findById(int $id): ?Course
+    {
+        return $this->courseRepository->findOneBy(['id' => $id]);
     }
 }

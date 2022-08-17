@@ -104,6 +104,30 @@ class CourseCrudControllerTests extends WebTestCase
         $this->assertArrayHasKey('description', $responseArray[2]);
     }
 
+    public function testCourseShow(): void
+    {
+        $firstCourse = $this->courseRepository->first();
+        $this->client->loginUser($this->testUser);
+        $this->client->request('GET', '/api/course/show/' . $firstCourse->getId());
+        $responseArray = json_decode($this->client->getResponse()->getContent(), true);
+
+        $this->assertResponseIsSuccessful();
+        $this->assertArrayHasKey('id', $responseArray);
+        $this->assertArrayHasKey('title', $responseArray);
+        $this->assertArrayHasKey('description', $responseArray);
+    }
+
+    public function testCourseShowDoesNotExist(): void
+    {
+        $this->courseRepository->removeAll();
+        $this->client->loginUser($this->testUser);
+        $this->client->request('GET', '/api/course/show/' . 1);
+        $response = json_decode($this->client->getResponse()->getContent());
+
+        $this->assertResponseStatusCodeSame(404);
+        $this->assertNull($response);
+    }
+
 
     private function makeTestUser(): void
     {
