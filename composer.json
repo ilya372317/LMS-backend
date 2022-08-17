@@ -24,6 +24,7 @@
         "doctrine/orm": "^2.12",
         "easycorp/easyadmin-bundle": "^4.3",
         "firebase/php-jwt": "^6.3",
+        "knplabs/knp-paginator-bundle": "^5.8",
         "lexik/jwt-authentication-bundle": "^2.16",
         "phpdocumentor/reflection-docblock": "^5.3",
         "phpstan/phpdoc-parser": "^1.6",
