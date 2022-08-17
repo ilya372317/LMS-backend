@@ -38,4 +38,10 @@ class CourseCrudController extends AbstractController
 
         return $response;
     }
+
+    #[Route(path: '/api/course/create', name: 'course_create')]
+    public function create(Request $request): Response
+    {
+        dd($this->getUser());
+    }
 }

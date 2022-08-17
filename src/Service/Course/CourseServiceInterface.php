@@ -2,7 +2,6 @@
 
 namespace App\Service\Course;
 
-use App\DTO\Request\ResponseMessage;
 use App\Entity\Course;
 use Symfony\Component\HttpFoundation\Request;
 
