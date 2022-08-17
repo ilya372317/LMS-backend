@@ -2,6 +2,9 @@
 
 namespace App\Security;
 
+use App\Constants\Request\HeaderName;
+use App\Constants\Request\HeaderValue;
+use App\Constants\Response\ResponseStatus;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
@@ -19,11 +22,11 @@ class ApiAccessDeniedHandler implements AccessDeniedHandlerInterface
             'type' => 'error',
             'title' => 'Access denied',
             'message' => 'You have no permissions to access this request',
-            'code' => 403
+            'code' => ResponseStatus::ACCESS_DENIED
         ]),
-            403,
+            ResponseStatus::ACCESS_DENIED,
             [
-                'content-type' => 'application/json'
+                HeaderName::CONTENT_TYPE => HeaderValue::JSON_CONTENT_TYPE
             ]
         );
     }
