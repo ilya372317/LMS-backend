@@ -9240,16 +9240,16 @@
         },
         {
             "name": "xaduken/image-symfony-support",
-            "version": "v1.0.0",
+            "version": "v1.0.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/ilya372317/image-symfony-support.git",
-                "reference": "ddd9031f7390dab73a3bae22ef1f9f441befa24d"
+                "reference": "b441814017e429a0f8b60d91add8e07154fab276"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/ilya372317/image-symfony-support/zipball/ddd9031f7390dab73a3bae22ef1f9f441befa24d",
-                "reference": "ddd9031f7390dab73a3bae22ef1f9f441befa24d",
+                "url": "https://api.github.com/repos/ilya372317/image-symfony-support/zipball/b441814017e429a0f8b60d91add8e07154fab276",
+                "reference": "b441814017e429a0f8b60d91add8e07154fab276",
                 "shasum": ""
             },
             "require": {
@@ -9283,9 +9283,9 @@
             "support": {
                 "email": "ilya.otinov@gmail.com",
                 "issues": "https://github.com/ilya372317/image-symfony-support/issues",
-                "source": "https://github.com/ilya372317/image-symfony-support/tree/v1.0.0"
+                "source": "https://github.com/ilya372317/image-symfony-support/tree/v1.0.3"
             },
-            "time": "2022-08-16T05:53:38+00:00"
+            "time": "2022-08-17T02:19:07+00:00"
         }
     ],
     "packages-dev": [
