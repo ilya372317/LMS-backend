@@ -4,6 +4,7 @@ namespace App\Repository;
 
 use App\Entity\Course;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use Doctrine\ORM\NonUniqueResultException;
 use Doctrine\Persistence\ManagerRegistry;
 
 /**
@@ -37,6 +38,26 @@ class CourseRepository extends ServiceEntityRepository
         if ($flush) {
             $this->getEntityManager()->flush();
         }
+    }
+
+    public function removeAll(): void
+    {
+        $this->createQueryBuilder('course')
+            ->delete()
+            ->getQuery()
+            ->execute();
+    }
+
+    /**
+     * @throws NonUniqueResultException
+     */
+    public function first(): ?Course
+    {
+        $queryBuilder = $this->createQueryBuilder('course')
+            ->orderBy('course.id', 'ASC');
+        $query = $queryBuilder->getQuery();
+
+        return $query->setMaxResults(1)->getOneOrNullResult();
     }
 
 }
