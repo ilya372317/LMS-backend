@@ -32,12 +32,10 @@ class PaginatorContext
 
         if ($requestHasItemPerPageParameter) {
             return new PaginationWithItemsPerPage($this->paginator, $this->request);
+        } elseif ($requestHasPageNumberParameter) {
+            return new PaginationWithPageNum($this->paginator, $this->request);
         } else {
-            if ($requestHasPageNumberParameter) {
-                return new PaginationWithPageNum($this->paginator, $this->request);
-            } else {
-                return new PaginationWithoutParameters($this->paginator, $this->request);
-            }
+            return new PaginationWithoutParameters($this->paginator, $this->request);
         }
     }
 

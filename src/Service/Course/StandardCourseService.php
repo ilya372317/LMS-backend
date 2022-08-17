@@ -21,6 +21,7 @@ class StandardCourseService implements CourseServiceInterface
     public function getCourseList(Request $request): iterable
     {
         $paginatorContext = new PaginatorContext($request, $this->paginator);
-        return $paginatorContext->getPagination($this->courseRepository->findAll());
+        $allCourses = $this->courseRepository->findAll();
+        return $paginatorContext->getPagination($allCourses);
     }
 }
